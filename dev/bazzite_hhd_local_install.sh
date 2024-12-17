@@ -45,8 +45,8 @@ ExecStart=/var/home/$USER/.local/bin/hhd/venv/bin/hhd --user $USER
 Environment="HHD_HORI_STEAM=1"
 Environment="HHD_PPD_MASK=0"
 Environment="HHD_GS_STANDBY=0"
-Environment="HHD_GS_STEAMUI_HALFHZ=1"
-Environment="HHD_GS_DPMS=1"
+Environment="HHD_GS_STEAMUI_HALFHZ=0"
+Environment="HHD_GS_DPMS=0"
 
 [Install]
 WantedBy=default.target
