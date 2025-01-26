@@ -33,7 +33,7 @@ source ./venv/bin/activate
 
 ./venv/bin/pip install -e .
 
-./venv/bin/pip install git+https://github.com/aarron-lee/adjustor@plugin_check
+# ./venv/bin/pip install git+https://github.com/aarron-lee/adjustor@plugin_check
 
 # cannot directly cat into /etc/systemd/system/ (probably due to se linux)
 cat << EOF > "./hhd_local.service"
