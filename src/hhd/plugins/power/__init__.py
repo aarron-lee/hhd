@@ -118,6 +118,8 @@ class PowerPlugin(HHDPlugin):
         self.therm = {}
         self.bat = None
 
+        return False
+
         try:
             for therm in os.listdir("/sys/class/thermal"):
                 if not therm.startswith("thermal_zone"):
