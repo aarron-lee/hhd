@@ -118,33 +118,7 @@ class PowerPlugin(HHDPlugin):
         self.therm = {}
         self.bat = None
 
-        return False
-
         try:
-            for therm in os.listdir("/sys/class/thermal"):
-                if not therm.startswith("thermal_zone"):
-                    continue
-
-                with open(f"/sys/class/thermal/{therm}/type") as f:
-                    if "acpitz" not in f.read():
-                        continue
-
-                for trip in os.listdir(f"/sys/class/thermal/{therm}"):
-                    if not trip.startswith("trip_point_"):
-                        continue
-
-                    if not trip.endswith("_type"):
-                        continue
-
-                    with open(f"/sys/class/thermal/{therm}/{trip}") as f:
-                        if "hot" not in f.read():
-                            continue
-
-                    with open(
-                        f"/sys/class/thermal/{therm}/{trip.replace("_type", "_temp")}"
-                    ) as f:
-                        self.therm[f"/sys/class/thermal/{therm}/temp"] = int(f.read())
-                        break
 
             for bat in os.listdir("/sys/class/power_supply"):
                 if not bat.startswith("BAT"):
