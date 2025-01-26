@@ -49,13 +49,6 @@ Debug Log created by Handheld Daemon at {datetime.datetime.now().strftime('%d/%m
         except Exception as e:
             out += f"Error reading {name} ({path}): {e}\n"
 
-    out += "Kernel Version (uname -sr):\n"
-    try:
-        out += f"\"{subprocess.run(
-            ['uname', '-sr'], capture_output=True, text=True
-        ).stdout.strip()}\"\n"
-    except Exception as e:
-        out += f"Error reading kernel version: {e}\n"
 
     out += "\n# OS Release\n"
     try:
