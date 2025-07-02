@@ -1,5 +1,6 @@
 from threading import Event, Thread
 from typing import Any, Sequence
+from evdev import InputDevice, list_devices
 
 from hhd.controller.physical.rgb import is_led_supported
 from hhd.plugins import (
@@ -14,6 +15,27 @@ from hhd.plugins import (
 from hhd.plugins.settings import HHDSettings
 
 from .const import CONFS, DEFAULT_MAPPINGS, get_default_config
+
+def is_win_2():
+    devices = [InputDevice(path) for path in list_devices()]
+
+    found_gamepad = None
+    for device in devices:
+        # Check for common Xbox gamepad names
+        if "GPD Win 2 X-Box Controller" in device.name:
+            found_gamepad = device
+            break
+
+    if found_gamepad:
+        vendor_id = hex(found_gamepad.info.vendor)
+        product_id = hex(found_gamepad.info.product)
+        print(f"Xbox Gamepad Found: {found_gamepad.name}")
+        print(f"Vendor ID (VID): {vendor_id}")
+        print(f"Product ID (PID): {product_id}")
+        return True
+    else:
+        print("No Xbox gamepad found.")
+        return False
 
 
 class GenericControllersPlugin(HHDPlugin):
@@ -113,6 +135,13 @@ def autodetect(existing: Sequence[HHDPlugin]) -> Sequence[HHDPlugin]:
     # if a device exists here its officially supported
     with open("/sys/devices/virtual/dmi/id/product_name") as f:
         dmi = f.read().strip()
+
+    if dmi == 'Default string':
+        # check for GPD win 2
+        print('generic dmi')
+        if is_win_2():
+            # set placeholder dmi
+            dmi = 'GPD Win 2'
 
     dconf = CONFS.get(dmi, None)
     if dconf:

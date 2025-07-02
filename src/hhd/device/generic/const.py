@@ -183,6 +183,12 @@ CONFS = {
         "type": "tecno",
         "display_gyro": False,
     },
+    "GPD Win 2": {
+        "name": "GPD Win 2",
+        "extra_buttons": "none",
+        "type": "win2",
+        "display_gyro": False,
+    },
 }
 
 

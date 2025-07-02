@@ -23,6 +23,8 @@ LONGER_ERROR_MARGIN = 1.3
 
 logger = logging.getLogger(__name__)
 
+WIN_2_VID = 0x79
+WIN_2_PID = 0x18d4
 
 GAMEPAD_VID = 0x045E
 GAMEPAD_PID = 0x028E
@@ -68,6 +70,8 @@ def plugin_run(
                     vid = TECNO_VID
                 case "claw":
                     vid = MSI_CLAW_VID
+                case "win2":
+                    vid = WIN_2_VID
                 case _:
                     vid = GAMEPAD_VID
             found_device = bool(enumerate_evs(vid=vid))
@@ -139,8 +143,8 @@ def controller_loop(
 
     # Inputs
     d_xinput = GenericGamepadEvdev(
-        vid=[GAMEPAD_VID, MSI_CLAW_VID, TECNO_VID],
-        pid=[GAMEPAD_PID, MSI_CLAW_PID, TECNO_PID],
+        vid=[GAMEPAD_VID, MSI_CLAW_VID, TECNO_VID, WIN_2_VID],
+        pid=[GAMEPAD_PID, MSI_CLAW_PID, TECNO_PID, WIN_2_PID],
         # name=["Generic X-Box pad"],
         capabilities={EC("EV_KEY"): [EC("BTN_A")]},
         required=True,
@@ -234,6 +238,15 @@ def controller_loop(
             d_kbd_2 = GenericGamepadHidraw(
                 vid=[TECNO_VID],
                 pid=[TECNO_PID],
+                usage_page=[0xFFA0],
+                usage=[0x0001],
+                required=True,
+                btn_map=TECNO_RAW_INTERFACE_BTN_MAP,
+            )
+        if dtype == 'win2':
+            d_kbd_2 = GenericGamepadHidraw(
+                vid=[WIN_2_VID],
+                pid=[WIN_2_PID],
                 usage_page=[0xFFA0],
                 usage=[0x0001],
                 required=True,
