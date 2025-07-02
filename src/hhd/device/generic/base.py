@@ -23,7 +23,7 @@ LONGER_ERROR_MARGIN = 1.3
 
 logger = logging.getLogger(__name__)
 
-WIN_2_VID = 0x79
+WIN_2_VID = 0x0079
 WIN_2_PID = 0x18d4
 
 GAMEPAD_VID = 0x045E
@@ -238,15 +238,6 @@ def controller_loop(
             d_kbd_2 = GenericGamepadHidraw(
                 vid=[TECNO_VID],
                 pid=[TECNO_PID],
-                usage_page=[0xFFA0],
-                usage=[0x0001],
-                required=True,
-                btn_map=TECNO_RAW_INTERFACE_BTN_MAP,
-            )
-        if dtype == 'win2':
-            d_kbd_2 = GenericGamepadHidraw(
-                vid=[WIN_2_VID],
-                pid=[WIN_2_PID],
                 usage_page=[0xFFA0],
                 usage=[0x0001],
                 required=True,

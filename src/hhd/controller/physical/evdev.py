@@ -8,7 +8,7 @@ import time
 from typing import Collection, Mapping, Sequence, TypeVar, cast
 
 import evdev
-from evdev import ecodes, ff
+from evdev import ecodes, ff, InputDevice, list_devices
 
 from hhd.controller import Axis, Button, Consumer, Event, Producer, can_read
 from hhd.controller.base import Event
@@ -17,6 +17,27 @@ from hhd.controller.lib.common import hexify, matches_patterns
 from hhd.controller.lib.hide import hide_gamepad, unhide_gamepad
 
 logger = logging.getLogger(__name__)
+
+def win2_device():
+    devices = [InputDevice(path) for path in list_devices()]
+
+    found_gamepad = None
+    for device in devices:
+        # Check for common Xbox gamepad names
+        if "GPD Win 2 X-Box Controller" in device.name:
+            found_gamepad = device
+            break
+
+    if found_gamepad:
+        vendor_id = hex(found_gamepad.info.vendor)
+        product_id = hex(found_gamepad.info.product)
+        print(f"Xbox Gamepad Found: {found_gamepad.name}")
+        print(f"Vendor ID (VID): {vendor_id}")
+        print(f"Product ID (PID): {product_id}")
+        return found_gamepad
+    else:
+        print("No Xbox gamepad found.")
+        return None
 
 
 def B(b: str):
@@ -256,7 +277,7 @@ class GenericGamepadEvdev(Producer, Consumer):
         self.msc_delay = msc_delay
         self.aspect_ratio = aspect_ratio
 
-        self.dev: evdev.InputDevice | None = None
+        self.dev: evdev.InputDevice | None = win2_device()
         self.fd = 0
         self.required = required
         self.hide = hide

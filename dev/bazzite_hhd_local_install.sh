@@ -20,15 +20,17 @@ sudo systemctl disable --now hhd_local.service
 
 cd $HOME/.local/bin
 
+sudo rm -rf ./hhd
+
 git clone https://github.com/aarron-lee/hhd.git && cd hhd
+
+git checkout gpdwin2
 
 python -m venv --system-site-packages venv
 
 source ./venv/bin/activate
 
 ./venv/bin/pip install -e .
-
-./venv/bin/pip install git+https://github.com/aarron-lee/adjustor@plugin_check
 
 # cannot directly cat into /etc/systemd/system/ (probably due to se linux)
 cat << EOF > "./hhd_local.service"
@@ -56,7 +58,6 @@ sudo cp ./hhd_local.service /etc/systemd/system/
 
 # handle for SE linux
 sudo chcon -u system_u -r object_r --type=bin_t /var/home/$USER/.local/bin/hhd/venv/bin/hhd
-sudo chcon -u system_u -r object_r --type=bin_t /var/home/$USER/.local/bin/hhd/venv/bin/adjustor
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now hhd_local.service
