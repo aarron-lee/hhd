@@ -5,6 +5,9 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
+sudo systemctl disable --now inputplumber.service
+sudo systemctl mask inputplumber.service
+
 # horipad steam controller: 
 # edit ~/.steam/steam/config/config.vdf
 # add to SDL_GamepadBind
@@ -47,7 +50,7 @@ Restart=always
 RestartSec=5
 WorkingDirectory=/home/$USER/.local/bin/hhd/venv/bin
 ExecStart=/home/$USER/.local/bin/hhd/venv/bin/hhd --user $USER
-Environment="HHD_HORI_STEAM=1"
+Environment="HHD_HORI_STEAM=0"
 Environment="HHD_PPD_MASK=0"
 Environment="HHD_GS_STANDBY=0"
 Environment="HHD_GS_STEAMUI_HALFHZ=0"
